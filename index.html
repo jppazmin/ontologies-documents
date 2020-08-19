@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Neo4j Interface Ontology</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- Google fonts - Popppins for copy-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,800">
+    <!-- orion icons-->
+    <link rel="stylesheet" href="css/orionicons.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/loading.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light-border.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/material.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/translucent.css"/>
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.png?3">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <!-- JavaScript files-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap-autocomplete.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="js/front.js"></script>
+    <script src="js/cypher.js"></script>
+    <script src="js/wordcloud2.js"></script>
+    <script src="js/jquery.loading.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+  </head>
+  <body onload="initComponents()">
+    <!-- navbar-->
+    <header class="header">
+      <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow"><a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i class="fas fa-align-left"></i></a><label class="navbar-brand form-control-label text-primary font-weight-bold text-uppercase">Ontologies Documents Dashboard</label>
+      </nav>
+    </header>
+    <div class="d-flex align-items-stretch">
+      <!--<div id="sidebar" class="sidebar py-3">
+        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">MAIN</div>
+        <ul class="sidebar-menu list-unstyled">
+              <li class="sidebar-list-item"><a href="index.html" class="sidebar-link text-muted active"><i class="o-home-1 mr-3 text-gray"></i><span>Home</span></a></li>
+        </ul>
+      </div>-->
+      <div class="page-holder w-100 d-flex flex-wrap">
+        <div class="container-fluid px-xl-5">
+          <section class="py-3">
+            <div id="cargando"></div>
+            <div class="form-group row type-head">
+              <div class="col-lg-12 mb-3">
+                <div id="title-ontology" class="col-lg-12 text align-items-center">
+                    <h6 class="mb-0"></h6>
+                </div>
+                <div class="bg-white shadow roundy p-4 h-100 d-flex align-items-center justify-content-between">
+                  <div class="input-group mb-3">                    
+                    <div class="input-group-prepend">
+                      <button id="button-combo-ontology" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-outline-primary dropdown-toggle">Ontologies</button>
+                      <div id="comboOntology" class="dropdown-menu">
+                        <!--<div role="separator" class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">Separated link</a>-->
+                      </div>
+                    </div>                    
+                    <input type="text" aria-label="Text input with dropdown button" class="form-control ontology2AutoComplete">
+                  </div>
+                  <div class="icon text-white icon-ontology"><i class="fas fa-server"></i></div>
+                </div>
+              </div>
+            </div>            
+          </section>
+          <section class="py-1 group-terms">
+            <div class="row">
+              <div class="col-xl-12 col-lg-6 mb-4 mb-xl-0">
+                <div class="bg-white shadow roundy p-4 h-100 d-flex align-items-center justify-content-between">
+                  <div class="flex-grow-1 align-items-center">
+                    <div id="groupTerms" class="text"></div>
+                  </div>
+                  <div class="icon text-white bg-blue"><a onclick="executeQueryPreview()" class="text-white" href="#"><i class="fas fa-search"></i></a></div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="py-2 query-preview">
+            <div class="col-lg-12">
+              <div class="card mb-5 mb-lg-0">         
+                <div class="card-header">
+                  <h2 class="h6 mb-0 text-uppercase">Cloud Terms - Query Preview</h2>
+                </div>
+                <div class="card-body">
+                  <div class="form-group row">
+                    <div class="col-md-12 terms-cloud" style="height: 400px"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="py-2 section-table-article">
+            <div class="row">
+              <div class="col-lg-12 mb-4 table-article">
+                <div class="card">
+                  <div class="card-header">
+                    <h6 class="text-uppercase mb-0">Articles and their abstracts annotated
+                      <button type="button" aria-label="Close" class="close" onclick="closeTableArticles()"><span aria-hidden="true">×</span></button>
+                    </h6>
+                  </div>
+                  <div class="card-body">                           
+                    <table class="table card-text">
+                      <!--<thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Abstract</th>
+                          <th>Cloud Terms</th>
+                        </tr>
+                      </thead>-->
+                      <tbody id="bodyTableArticles">                        
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer d-flex justify-content-between">
+                    <button id="leftButtonArticleTable" type="button" class="btn btn-primary" onclick="executePaginationFullArticles(this)"><i class="fa fa-arrow-left"></i></button>                  
+                    <button id="rightButtonArticleTable" type="button" class="btn btn-primary" onclick="executePaginationFullArticles(this)"><i class="fa fa-arrow-right"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 article-terms-cloud">
+                <div class="card mb-5 mb-lg-0">         
+                  <div class="card-header">
+                    <h2 class="h6 mb-0 text-uppercase">Cloud Terms</h2>
+                  </div>
+                  <!--<div class="card-body">
+                    <p class="text-gray mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                  </div>-->
+                  <div class="card-body">
+                      <div class="article-cloud" style="height: 400px"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="executeQuery">
+            <div class="form-group row">
+              <div class="col-md-12 ml-auto">
+                <button type="button" class="btn btn-primary" onclick="executeQueryArticles()">Execute Query</button>
+              </div>
+            </div>
+          </section>
+        </div>
+        <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6 text-center text-md-left text-primary">
+                <p class="mb-2 mb-md-0">Ontologies Documents &copy; 2018-2020</p>
+              </div>
+              <div class="col-md-6 text-center text-md-right text-gray-400">
+                <p class="mb-0">Design by <a href="https://bootstrapious.com/admin-templates" class="external text-gray-400">Bootstrapious</a></p>
+                <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
